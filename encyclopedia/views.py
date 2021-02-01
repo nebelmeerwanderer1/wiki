@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django import forms
 from django.urls import reverse
 from markdown2 import Markdown
+import random
 
 from . import util
 
@@ -39,4 +40,19 @@ def search(request):
     else:
         return render(request, "encyclopedia/search.html", {"title": nomatch}) 
     
+def randompage(request):
+    random_page = random.choice(util.list_entries())
+    return HttpResponseRedirect(reverse('wiki', args=(random_page,))) 
 
+def new_page(request):
+    return render(request, "encyclopedia/newpage.html")
+
+def savepage(request):
+    title = request.POST.get("title")
+    details = request.POST.get("details")
+    duplicate = "This entry already exists - new entry not possible but you can edit the existing one"
+    if util.get_entry(title):
+        return render(request, "encyclopedia/search.html", {"title": duplicate})
+    else:
+        util.save_entry(title,details)
+        return HttpResponseRedirect(reverse('wiki', args=(title,))) 

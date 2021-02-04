@@ -1,0 +1,1 @@
+Quite old, fundamental programming language where a lot of properties have to be explicitly called - e.g. memory allocation and deletion. Data types also have to be specified.  

@@ -19,7 +19,9 @@ def index(request):
 
 def wiki(request, entry):
     if entry not in util.list_entries():
-        raise Http404
+        return render(request, 
+        "encyclopedia/wiki.html", 
+        {"title": "Not found", "content": "Requested entry was not found"})
     content = util.get_entry(entry)
     return render(
         request, 
